@@ -7,7 +7,6 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
-import java.util.List;
 
 @RestController
 @RequestMapping("student")
@@ -55,10 +54,7 @@ public class StudentController {
 
     @DeleteMapping("{studentId}")
     public ResponseEntity<Student> deleteStudent(@PathVariable long studentId) {
-        Student student = studentService.deleteStudent(studentId);
-        if (student == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-        return ResponseEntity.ok(student);
+        studentService.deleteStudent(studentId);
+        return ResponseEntity.ok().build();
     }
 }
