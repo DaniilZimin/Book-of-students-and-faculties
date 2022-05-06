@@ -22,6 +22,33 @@ public class FacultyService {
     }
 
     public Faculty getFacultyById(long facultyId) {
-        return facultyRepository.findById(facultyId).get();
+        return getFaculty(facultyId);
+    }
+
+    public List<Student> getFacultyStudents(long facultyId) {
+        Faculty faculty = getFaculty(facultyId);
+        return faculty.getStudents();
+    }
+
+    public List<Faculty> getFacultyByColor(String color) {
+        return facultyRepository.findByColor(color);
+    }
+
+    public List<Faculty> getFindNameOrColor(String nameOrColor) {
+        return facultyRepository.findFacultyByColorOrNameAllIgnoreCase(nameOrColor, nameOrColor);
+    }
+
+    public Faculty updateFaculty(Faculty faculty) {
+        return facultyRepository.save(faculty);
+    }
+
+    public void deleteFaculty(long facultyId) {
+        facultyRepository.deleteById(facultyId);
+    }
+
+    private Faculty getFaculty(long facultyId) {
+        return facultyRepository.findById(facultyId).orElseThrow(
+                () -> new NotFoundException("Факультет не найден!")
+        );
     }
 }

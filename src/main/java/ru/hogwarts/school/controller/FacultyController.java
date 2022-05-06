@@ -1,5 +1,7 @@
 package ru.hogwarts.school.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,7 +10,9 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
+import java.util.List;
 
+@Tag(name = "FacultyController", description = "Контроллер по работе с факультетами")
 @RestController
 @RequestMapping("faculty")
 public class FacultyController {
@@ -19,15 +23,17 @@ public class FacultyController {
         this.facultyService = facultyService;
     }
 
+    @Operation(summary = "Создание факультета", description = "Создание факультета")
     @PostMapping
     public ResponseEntity<Faculty> create(@RequestBody Faculty faculty) {
         Faculty createdFaculty = facultyService.createFaculty(faculty);
         return ResponseEntity.ok(createdFaculty);
     }
 
-    @GetMapping("{facultyId}")
-    public ResponseEntity<Faculty> getFaculty(@PathVariable long facultyId) {
-        Faculty faculty = facultyService.getFacultyById(facultyId);
+    @Operation(summary = "Получение факультета по идентификатору", description = "Получение факультета по идентификатору")
+    @GetMapping("{id}")
+    public ResponseEntity<Faculty> getFaculty(@PathVariable("id") long id) {
+        Faculty faculty = facultyService.getFacultyById(id);
         if (faculty == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

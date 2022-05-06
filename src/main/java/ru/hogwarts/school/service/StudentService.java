@@ -22,6 +22,32 @@ public class StudentService {
     }
 
     public Student getStudentById(long studentId) {
-        return studentRepository.findById(studentId).get();
+        return getStudent(studentId);
+    }
+
+    public Faculty getStudentFacultyById(long id) {
+        return getStudent(id).getFaculty();
+    }
+
+    public List<Student> getAllStudentsByAge(int age) {
+        return studentRepository.findStudentByAge(age);
+    }
+
+    public List<Student> getFindByAgeBetween(int min, int max) {
+        return studentRepository.findByAgeBetween(min, max);
+    }
+
+    public Student updateStudent(Student student) {
+        return studentRepository.save(student);
+    }
+
+    public void deleteStudent(long studentId) {
+        studentRepository.deleteById(studentId);
+    }
+
+    private Student getStudent(long studentId) {
+        return studentRepository.findById(studentId).orElseThrow(
+                () -> new NotFoundException("Студент не найден!")
+        );
     }
 }
