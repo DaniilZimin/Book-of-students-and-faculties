@@ -53,6 +53,21 @@ public class StudentServiceImpl implements StudentService {
         studentRepository.deleteById(studentId);
     }
 
+    @Override
+    public int studentAmount() {
+        return studentRepository.studentAmount();
+    }
+
+    @Override
+    public double avgAgeStudent() {
+        return studentRepository.avgAgeStudent();
+    }
+
+    @Override
+    public List<Student> lastFiveStudent() {
+        return studentRepository.lastFiveStudent();
+    }
+
     private Student getStudent(long studentId) {
         return studentRepository.findById(studentId).orElseThrow(
                 () -> new NotFoundException("Студент не найден!")

@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 @Tag(name = "AvatarController", description = "Контроллер по работе с аватарками")
 @RestController
@@ -38,7 +39,7 @@ public class AvatarController {
     }
 
     @Operation(summary = "Получение аватарки студента из БД", description = "Получение аватарки студента из БД")
-    @GetMapping(value = "/{id}/avatar-from-db")
+    @GetMapping(value = "/{id}/avatarFromDb")
     public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id) {
         Avatar avatar = avatarService.findAvatar(id);
         HttpHeaders headers = new HttpHeaders();
@@ -48,7 +49,7 @@ public class AvatarController {
     }
 
     @Operation(summary = "Получение аватарки студента с локльного диска", description = "Получение аватарки студента с локльного диска")
-    @GetMapping(value = "/{id}/avatar-from-file")
+    @GetMapping(value = "/{id}/avatarFromFile")
     public void downloadAvatar(@PathVariable Long id, HttpServletResponse response) throws IOException {
         Avatar avatar = avatarService.findAvatar(id);
         Path path = Path.of(avatar.getFilePath());
@@ -59,5 +60,15 @@ public class AvatarController {
             response.setContentLength((int) avatar.getFileSize());
             is.transferTo(os);
         }
+    }
+
+    @Operation(summary = "Получение списков аватарок", description = "Получение списков аватарок")
+    @GetMapping("findAll")
+    public ResponseEntity<List<Avatar>> findAll() {
+        List<Avatar> avatars = avatarService.findAll();
+        if (avatars.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(avatars);
     }
 }

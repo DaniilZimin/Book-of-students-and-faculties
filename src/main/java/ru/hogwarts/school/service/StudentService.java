@@ -19,4 +19,10 @@ public interface StudentService {
     Student updateStudent(Student student);
 
     void deleteStudent(long studentId);
+
+    int studentAmount();
+
+    double avgAgeStudent();
+
+    List<Student> lastFiveStudent();
 }

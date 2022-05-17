@@ -86,4 +86,26 @@ public class StudentController {
         studentService.deleteStudent(studentId);
         return ResponseEntity.ok().build();
     }
+
+    @Operation(summary = "Количество всех студентов", description = "Количество всех студентов")
+    @GetMapping("amountStudent")
+    public Integer studentAmount() {
+        return studentService.studentAmount();
+    }
+
+    @Operation(summary = "Средний возраст студентов", description = "Средний возраст студентов")
+    @GetMapping("avgAgeStudent")
+    public Double avgAgeStudent() {
+        return studentService.avgAgeStudent();
+    }
+
+    @Operation(summary = "Последние пять студентов в списке", description = "Последние пять студентов в списке")
+    @GetMapping("lastFiveStudent")
+    public ResponseEntity<List<Student>> lastFiveStudent() {
+        List<Student> lastFiveStudent = studentService.lastFiveStudent();
+        if (lastFiveStudent.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(lastFiveStudent);
+    }
 }
