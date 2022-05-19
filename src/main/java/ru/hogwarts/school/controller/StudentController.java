@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.service.StudentService;
+import ru.hogwarts.school.service.impl.StudentServiceImpl;
 
 import java.util.Collection;
 import java.util.List;
@@ -17,9 +17,9 @@ import java.util.List;
 @RequestMapping("student")
 public class StudentController {
 
-    private final StudentService studentService;
+    private final StudentServiceImpl studentService;
 
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentServiceImpl studentService) {
         this.studentService = studentService;
     }
 
@@ -85,5 +85,27 @@ public class StudentController {
     public ResponseEntity<Student> deleteStudent(@PathVariable long studentId) {
         studentService.deleteStudent(studentId);
         return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Количество всех студентов", description = "Количество всех студентов")
+    @GetMapping("amountStudent")
+    public Integer studentAmount() {
+        return studentService.studentAmount();
+    }
+
+    @Operation(summary = "Средний возраст студентов", description = "Средний возраст студентов")
+    @GetMapping("avgAgeStudent")
+    public Double avgAgeStudent() {
+        return studentService.avgAgeStudent();
+    }
+
+    @Operation(summary = "Последние пять студентов в списке", description = "Последние пять студентов в списке")
+    @GetMapping("lastFiveStudent")
+    public ResponseEntity<List<Student>> lastFiveStudent() {
+        List<Student> lastFiveStudent = studentService.lastFiveStudent();
+        if (lastFiveStudent.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(lastFiveStudent);
     }
 }

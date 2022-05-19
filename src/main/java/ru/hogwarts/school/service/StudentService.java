@@ -1,53 +1,28 @@
 package ru.hogwarts.school.service;
 
-import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.List;
 
-@Service
-public class StudentService {
+public interface StudentService {
+    Student createStudent(Student student);
 
-    private final StudentRepository studentRepository;
+    Student getStudentById(long studentId);
 
-    public StudentService(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
-    }
+    Faculty getStudentFacultyById(long id);
 
-    public Student createStudent(Student student) {
-        return studentRepository.save(student);
-    }
+    List<Student> getAllStudentsByAge(int age);
 
-    public Student getStudentById(long studentId) {
-        return getStudent(studentId);
-    }
+    List<Student> getFindByAgeBetween(int min, int max);
 
-    public Faculty getStudentFacultyById(long id) {
-        return getStudent(id).getFaculty();
-    }
+    Student updateStudent(Student student);
 
-    public List<Student> getAllStudentsByAge(int age) {
-        return studentRepository.findStudentByAge(age);
-    }
+    void deleteStudent(long studentId);
 
-    public List<Student> getFindByAgeBetween(int min, int max) {
-        return studentRepository.findByAgeBetween(min, max);
-    }
+    int studentAmount();
 
-    public Student updateStudent(Student student) {
-        return studentRepository.save(student);
-    }
+    double avgAgeStudent();
 
-    public void deleteStudent(long studentId) {
-        studentRepository.deleteById(studentId);
-    }
-
-    private Student getStudent(long studentId) {
-        return studentRepository.findById(studentId).orElseThrow(
-                () -> new NotFoundException("Студент не найден!")
-        );
-    }
+    List<Student> lastFiveStudent();
 }
