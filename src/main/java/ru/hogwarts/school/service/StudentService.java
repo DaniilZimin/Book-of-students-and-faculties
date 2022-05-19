@@ -1,10 +1,12 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.StudentRepository;
 
-import java.util.*;
+import java.util.List;
 
 @Service
 public class StudentService {
@@ -20,18 +22,19 @@ public class StudentService {
     }
 
     public Student getStudentById(long studentId) {
-        return studentRepository.findById(studentId).get();
+        return getStudent(studentId);
     }
 
-    public Collection<Student> getAllStudentsByAge(int age) {
-        List<Student> studentsByAge = new ArrayList<>();
-        for (Student student : studentRepository.findAll()) {
-            if (student.getAge() == age) {
-                studentsByAge.add(student);
-            }
-        }
-        return studentsByAge;
+    public Faculty getStudentFacultyById(long id) {
+        return getStudent(id).getFaculty();
+    }
 
+    public List<Student> getAllStudentsByAge(int age) {
+        return studentRepository.findStudentByAge(age);
+    }
+
+    public List<Student> getFindByAgeBetween(int min, int max) {
+        return studentRepository.findByAgeBetween(min, max);
     }
 
     public Student updateStudent(Student student) {
@@ -40,5 +43,11 @@ public class StudentService {
 
     public void deleteStudent(long studentId) {
         studentRepository.deleteById(studentId);
+    }
+
+    private Student getStudent(long studentId) {
+        return studentRepository.findById(studentId).orElseThrow(
+                () -> new NotFoundException("Студент не найден!")
+        );
     }
 }
