@@ -1,44 +1,28 @@
 package ru.hogwarts.school.service;
 
-import org.springframework.stereotype.Service;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.repositories.StudentRepository;
 
-import java.util.*;
+import java.util.List;
 
-@Service
-public class StudentService {
+public interface StudentService {
+    Student createStudent(Student student);
 
-    private final StudentRepository studentRepository;
+    Student getStudentById(long studentId);
 
-    public StudentService(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
-    }
+    Faculty getStudentFacultyById(long id);
 
-    public Student createStudent(Student student) {
-        return studentRepository.save(student);
-    }
+    List<Student> getAllStudentsByAge(int age);
 
-    public Student getStudentById(long studentId) {
-        return studentRepository.findById(studentId).get();
-    }
+    List<Student> getFindByAgeBetween(int min, int max);
 
-    public Collection<Student> getAllStudentsByAge(int age) {
-        List<Student> studentsByAge = new ArrayList<>();
-        for (Student student : studentRepository.findAll()) {
-            if (student.getAge() == age) {
-                studentsByAge.add(student);
-            }
-        }
-        return studentsByAge;
+    Student updateStudent(Student student);
 
-    }
+    void deleteStudent(long studentId);
 
-    public Student updateStudent(Student student) {
-        return studentRepository.save(student);
-    }
+    int studentAmount();
 
-    public void deleteStudent(long studentId) {
-        studentRepository.deleteById(studentId);
-    }
+    double avgAgeStudent();
+
+    List<Student> lastFiveStudent();
 }
