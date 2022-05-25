@@ -1,5 +1,7 @@
 package ru.hogwarts.school.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -36,8 +38,11 @@ public class AvatarServiceImpl implements ru.hogwarts.school.service.AvatarServi
         this.studentRepository = studentRepository;
     }
 
+    Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+
     @Override
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
+        logger.info("Был вызван метод с названием: {}", Thread.currentThread().getStackTrace()[1].getMethodName());
         Optional<Student> st = studentRepository.findById(studentId);
         Student student = st.orElseThrow(() -> new NotFoundException("Студент с id" + studentId + "не найден!"));
         Path filePath = Path.of(avatarsDir, student + "." + getExtensions(avatarFile.getOriginalFilename()));
@@ -64,11 +69,13 @@ public class AvatarServiceImpl implements ru.hogwarts.school.service.AvatarServi
 
     @Override
     public Avatar findAvatar(long studentId) {
+        logger.info("Был вызван метод с названием: {}", Thread.currentThread().getStackTrace()[1].getMethodName());
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
     @Override
     public List<Avatar> findAll() {
+        logger.info("Был вызван метод с названием: {}", Thread.currentThread().getStackTrace()[1].getMethodName());
         Pageable pageRequest = PageRequest.of(0, 2);
         return avatarRepository.findAll(pageRequest).getContent();
     }
