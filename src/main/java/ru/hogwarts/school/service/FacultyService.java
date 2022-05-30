@@ -6,6 +6,8 @@ import ru.hogwarts.school.model.Student;
 import java.util.List;
 
 public interface FacultyService {
+    String longestName();
+
     Faculty createFaculty(Faculty faculty);
 
     Faculty getFacultyById(long facultyId);

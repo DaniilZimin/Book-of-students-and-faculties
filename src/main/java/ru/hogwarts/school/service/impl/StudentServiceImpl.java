@@ -10,6 +10,8 @@ import ru.hogwarts.school.repositories.StudentRepository;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Stream;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -21,6 +23,36 @@ public class StudentServiceImpl implements StudentService {
     }
 
     Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+
+    @Override
+    public int sum() {
+        return Stream.iterate(1, a -> a + 1)
+                .limit(1_000_000_00)
+                .reduce(0, Integer::sum);
+    }
+
+    @Override
+    public Double avgAgeStudents() {
+
+        return studentRepository.findAll()
+                .stream()
+                .mapToDouble(Student::getAge)
+                .average()
+                .orElseThrow(() -> new NotFoundException("Студентов не найдено!"));
+    }
+
+    @Override
+    public List<String> getAllStudentStartNameA() {
+
+        return studentRepository.findAll()
+                .stream()
+                .parallel()
+                .map(Student::getName)
+                .filter(a -> a.charAt(0) == 'А')
+                .map(a -> a.toUpperCase(Locale.ROOT))
+                .sorted()
+                .toList();
+    }
 
     @Override
     public Student createStudent(Student student) {

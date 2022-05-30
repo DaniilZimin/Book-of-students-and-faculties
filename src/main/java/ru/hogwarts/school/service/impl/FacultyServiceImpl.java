@@ -9,6 +9,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.service.FacultyService;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -21,6 +22,16 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+
+    @Override
+    public String longestName() {
+        return facultyRepository.findAll()
+                .stream()
+                .parallel()
+                .map(Faculty::getName)
+                .max(Comparator.comparing(String::length))
+                .orElseThrow(() -> new NotFoundException("Факультетов не найдено"));
+    }
 
     @Override
     public Faculty createFaculty(Faculty faculty) {

@@ -23,6 +23,12 @@ public class FacultyController {
         this.facultyService = facultyService;
     }
 
+    @Operation(summary = "Поиск самого длинного названия факультета", description = "Поиск самого длинного названия факультета")
+    @GetMapping("longestName")
+    public ResponseEntity<String> longestName() {
+        return ResponseEntity.ok(facultyService.longestName());
+    }
+
     @Operation(summary = "Создание факультета", description = "Создание факультета")
     @PostMapping
     public ResponseEntity<Faculty> create(@RequestBody Faculty faculty) {
