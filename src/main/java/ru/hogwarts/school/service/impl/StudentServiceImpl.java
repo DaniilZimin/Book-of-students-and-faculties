@@ -10,7 +10,6 @@ import ru.hogwarts.school.repositories.StudentRepository;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Stream;
 
 @Service
@@ -23,6 +22,47 @@ public class StudentServiceImpl implements StudentService {
     }
 
     Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+
+    @Override
+    public void printName() {
+        List<Student> students = studentRepository.findAll();
+
+        System.out.println(students.get(0).getName());
+        System.out.println(students.get(1).getName());
+
+        new Thread(() -> {
+            System.out.println(students.get(2).getName());
+            System.out.println(students.get(3).getName());
+        }).start();
+
+        new Thread(() -> {
+            System.out.println(students.get(4).getName());
+            System.out.println(students.get(5).getName());
+        }).start();
+    }
+
+    @Override
+    public void printNameSynchronized() {
+
+        run(0);
+        run(1);
+
+        new Thread(() -> {
+            run(2);
+            run(3);
+        }).start();
+
+        new Thread(() -> {
+            run(4);
+            run(5);
+        }).start();
+    }
+
+    private synchronized void run(int id) {
+        List<Student> students = studentRepository.findAll();
+
+        System.out.println(students.get(id).getName());
+    }
 
     @Override
     public int sum() {
@@ -49,7 +89,7 @@ public class StudentServiceImpl implements StudentService {
                 .parallel()
                 .map(Student::getName)
                 .filter(a -> a.charAt(0) == 'А')
-                .map(a -> a.toUpperCase(Locale.ROOT))
+                .map(String::toUpperCase)
                 .sorted()
                 .toList();
     }

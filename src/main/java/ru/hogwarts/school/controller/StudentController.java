@@ -23,6 +23,15 @@ public class StudentController {
         this.studentService = studentService;
     }
 
+    @GetMapping("printName")
+    public void printName() {
+        studentService.printName();
+    }
+
+    @GetMapping("printNameSynchronized")
+    public void printNameSynchronized() {
+        studentService.printNameSynchronized();
+    }
 
     @Operation(summary = "Сумма чисел", description = "Сумма чисел")
     @GetMapping("sum")
