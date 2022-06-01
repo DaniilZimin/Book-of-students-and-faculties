@@ -6,6 +6,13 @@ import ru.hogwarts.school.model.Student;
 import java.util.List;
 
 public interface StudentService {
+
+    int sum();
+
+    Double avgAgeStudents();
+
+    List<String> getAllStudentStartNameA();
+
     Student createStudent(Student student);
 
     Student getStudentById(long studentId);

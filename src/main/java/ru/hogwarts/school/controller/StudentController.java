@@ -23,6 +23,29 @@ public class StudentController {
         this.studentService = studentService;
     }
 
+
+    @Operation(summary = "Сумма чисел", description = "Сумма чисел")
+    @GetMapping("sum")
+    public Integer sum() {
+        return studentService.sum();
+    }
+
+    @Operation(summary = "Получение среднего возраста студентов", description = "Получение среднего возраста студентов")
+    @GetMapping("getAvgAgeStudents")
+    public ResponseEntity<Double> getAvgAgeStudents() {
+        return ResponseEntity.ok(studentService.avgAgeStudents());
+    }
+
+    @Operation(summary = "Получение имени студента на букву А в верхнем регистре", description = "Получение имени студента на букву А в верхнем регистре")
+    @GetMapping("getAllStudentStartNameA")
+    public ResponseEntity<List<String>> getAllStudentStartNameA() {
+        List<String> names = studentService.getAllStudentStartNameA();
+        if (names.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(names);
+    }
+
     @Operation(summary = "Создание студента", description = "Создание студента")
     @PostMapping
     public ResponseEntity<Student> createStudent(@RequestBody Student student) {
