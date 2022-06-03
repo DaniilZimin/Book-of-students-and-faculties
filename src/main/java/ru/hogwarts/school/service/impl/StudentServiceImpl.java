@@ -59,9 +59,9 @@ public class StudentServiceImpl implements StudentService {
     }
 
     private synchronized void run(int id) {
-        List<Student> students = studentRepository.findAll();
+        String students = studentRepository.findAll().get(id).getName();
 
-        System.out.println(students.get(id).getName());
+        System.out.println(students);
     }
 
     @Override

@@ -43,7 +43,7 @@ public class StudentControllerTests {
 
     @Test
     void testGetStudentById() {
-        Assertions.assertThat(this.testRestTemplate.getForObject("http://localhost:" + port + "/student/2", String.class)).contains("Саша");
+        Assertions.assertThat(this.testRestTemplate.getForObject("http://localhost:" + port + "/student/2", String.class)).contains("Сергей");
     }
 
     @Test
