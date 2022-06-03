@@ -7,6 +7,10 @@ import java.util.List;
 
 public interface StudentService {
 
+    void printName();
+
+    void printNameSynchronized();
+
     int sum();
 
     Double avgAgeStudents();
