@@ -23,22 +23,6 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping("printName")
-    public void printName() {
-        studentService.printName();
-    }
-
-    @GetMapping("printNameSynchronized")
-    public void printNameSynchronized() {
-        studentService.printNameSynchronized();
-    }
-
-    @Operation(summary = "Сумма чисел", description = "Сумма чисел")
-    @GetMapping("sum")
-    public Integer sum() {
-        return studentService.sum();
-    }
-
     @Operation(summary = "Получение среднего возраста студентов", description = "Получение среднего возраста студентов")
     @GetMapping("getAvgAgeStudents")
     public ResponseEntity<Double> getAvgAgeStudents() {
@@ -112,7 +96,7 @@ public class StudentController {
         return ResponseEntity.ok(updatedStudent);
     }
 
-    @Operation(summary = "Удаление студента по идентефикатору", description = "Удаление студента по идентефикатору")
+    @Operation(summary = "Удаление студента по идентификатору", description = "Удаление студента по идентификатору")
     @DeleteMapping("{studentId}")
     public ResponseEntity<Student> deleteStudent(@PathVariable long studentId) {
         studentService.deleteStudent(studentId);
@@ -139,5 +123,21 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         return ResponseEntity.ok(lastFiveStudent);
+    }
+
+    @GetMapping("printName")
+    public void printName() {
+        studentService.printName();
+    }
+
+    @GetMapping("printNameSynchronized")
+    public void printNameSynchronized() {
+        studentService.printNameSynchronized();
+    }
+
+    @Operation(summary = "Сумма чисел", description = "Сумма чисел")
+    @GetMapping("sum")
+    public Integer sum() {
+        return studentService.sum();
     }
 }

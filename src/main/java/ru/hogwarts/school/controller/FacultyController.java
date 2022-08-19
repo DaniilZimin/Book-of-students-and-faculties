@@ -56,7 +56,7 @@ public class FacultyController {
         return ResponseEntity.ok(students);
     }
 
-    @Operation(summary = "Получение факультов по цвету факультета", description = "Получение факультетов по цвету факультета")
+    @Operation(summary = "Получение факультетов по цвету факультета", description = "Получение факультетов по цвету факультета")
     @GetMapping("filter/{color}")
     public ResponseEntity<Collection<Faculty>> getFacultyByColor(@PathVariable String color) {
         List<Faculty> faculties = facultyService.getFacultyByColor(color);
@@ -86,7 +86,7 @@ public class FacultyController {
         return ResponseEntity.ok(updatedFaculty);
     }
 
-    @Operation(summary = "Удаление факультета по иденетефикатору", description = "Удаление факультета по иденетефикатору")
+    @Operation(summary = "Удаление факультета по идентификатору", description = "Удаление факультета по идентификатору")
     @DeleteMapping("{facultyId}")
     public ResponseEntity<Faculty> deleteFaculty(@PathVariable long facultyId) {
         facultyService.deleteFaculty(facultyId);

@@ -1,7 +1,5 @@
 package ru.hogwarts.school.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 import ru.hogwarts.school.model.Faculty;
@@ -21,7 +19,78 @@ public class StudentServiceImpl implements StudentService {
         this.studentRepository = studentRepository;
     }
 
-    Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+    @Override
+    public Double avgAgeStudents() {
+
+        return studentRepository.findAll()
+                .stream()
+                .mapToDouble(Student::getAge)
+                .average()
+                .orElseThrow(() -> new NotFoundException("Студентов не найдено!"));
+    }
+
+    @Override
+    public List<String> getAllStudentStartNameA() {
+
+        return studentRepository.findAll()
+                .stream()
+                .parallel()
+                .map(Student::getName)
+                .filter(a -> a.charAt(0) == 'А')
+                .map(String::toUpperCase)
+                .sorted()
+                .toList();
+    }
+
+    @Override
+    public Student createStudent(Student student) {
+        return studentRepository.save(student);
+    }
+
+    @Override
+    public Student getStudentById(long studentId) {
+        return getStudent(studentId);
+    }
+
+    @Override
+    public Faculty getStudentFacultyById(long id) {
+        return getStudent(id).getFaculty();
+    }
+
+    @Override
+    public List<Student> getAllStudentsByAge(int age) {
+        return studentRepository.findStudentByAge(age);
+    }
+
+    @Override
+    public List<Student> getFindByAgeBetween(int min, int max) {
+        return studentRepository.findByAgeBetween(min, max);
+    }
+
+    @Override
+    public Student updateStudent(Student student) {
+        return studentRepository.save(student);
+    }
+
+    @Override
+    public void deleteStudent(long studentId) {
+        studentRepository.deleteById(studentId);
+    }
+
+    @Override
+    public int studentAmount() {
+        return studentRepository.studentAmount();
+    }
+
+    @Override
+    public double avgAgeStudent() {
+        return studentRepository.avgAgeStudent();
+    }
+
+    @Override
+    public List<Student> lastFiveStudent() {
+        return studentRepository.lastFiveStudent();
+    }
 
     @Override
     public void printName() {
@@ -58,12 +127,6 @@ public class StudentServiceImpl implements StudentService {
         }).start();
     }
 
-    private synchronized void run(int id) {
-        String students = studentRepository.findAll().get(id).getName();
-
-        System.out.println(students);
-    }
-
     @Override
     public int sum() {
         return Stream.iterate(1, a -> a + 1)
@@ -71,87 +134,10 @@ public class StudentServiceImpl implements StudentService {
                 .reduce(0, Integer::sum);
     }
 
-    @Override
-    public Double avgAgeStudents() {
+    private synchronized void run(int id) {
+        String students = studentRepository.findAll().get(id).getName();
 
-        return studentRepository.findAll()
-                .stream()
-                .mapToDouble(Student::getAge)
-                .average()
-                .orElseThrow(() -> new NotFoundException("Студентов не найдено!"));
-    }
-
-    @Override
-    public List<String> getAllStudentStartNameA() {
-
-        return studentRepository.findAll()
-                .stream()
-                .parallel()
-                .map(Student::getName)
-                .filter(a -> a.charAt(0) == 'А')
-                .map(String::toUpperCase)
-                .sorted()
-                .toList();
-    }
-
-    @Override
-    public Student createStudent(Student student) {
-        logger.info("Был вызван метод с названием: {}", Thread.currentThread().getStackTrace()[1].getMethodName());
-        return studentRepository.save(student);
-    }
-
-    @Override
-    public Student getStudentById(long studentId) {
-        logger.info("Был вызван метод с названием: {}", Thread.currentThread().getStackTrace()[1].getMethodName());
-        return getStudent(studentId);
-    }
-
-    @Override
-    public Faculty getStudentFacultyById(long id) {
-        logger.info("Был вызван метод с названием: {}", Thread.currentThread().getStackTrace()[1].getMethodName());
-        return getStudent(id).getFaculty();
-    }
-
-    @Override
-    public List<Student> getAllStudentsByAge(int age) {
-        logger.info("Был вызван метод с названием: {}", Thread.currentThread().getStackTrace()[1].getMethodName());
-        return studentRepository.findStudentByAge(age);
-    }
-
-    @Override
-    public List<Student> getFindByAgeBetween(int min, int max) {
-        logger.info("Был вызван метод с названием: {}", Thread.currentThread().getStackTrace()[1].getMethodName());
-        return studentRepository.findByAgeBetween(min, max);
-    }
-
-    @Override
-    public Student updateStudent(Student student) {
-        logger.info("Был вызван метод с названием: {}", Thread.currentThread().getStackTrace()[1].getMethodName());
-        return studentRepository.save(student);
-    }
-
-    @Override
-    public void deleteStudent(long studentId) {
-        logger.info("Был вызван метод с названием: {}", Thread.currentThread().getStackTrace()[1].getMethodName());
-        studentRepository.deleteById(studentId);
-    }
-
-    @Override
-    public int studentAmount() {
-        logger.info("Был вызван метод с названием: {}", Thread.currentThread().getStackTrace()[1].getMethodName());
-        return studentRepository.studentAmount();
-    }
-
-    @Override
-    public double avgAgeStudent() {
-        logger.info("Был вызван метод с названием: {}", Thread.currentThread().getStackTrace()[1].getMethodName());
-        return studentRepository.avgAgeStudent();
-    }
-
-    @Override
-    public List<Student> lastFiveStudent() {
-        logger.info("Был вызван метод с названием: {}", Thread.currentThread().getStackTrace()[1].getMethodName());
-        return studentRepository.lastFiveStudent();
+        System.out.println(students);
     }
 
     private Student getStudent(long studentId) {
